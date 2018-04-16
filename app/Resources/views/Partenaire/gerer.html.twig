@@ -1,0 +1,183 @@
+{% extends "base.html.twig" %}
+
+
+    {% block additionnalcss %}
+        <link rel="stylesheet" href="{{ asset('assets/calendar/calendar.css') }}">
+    {% endblock %}
+
+    {% block additionnaljs %}
+
+        <script src="{{ asset('assets/js/vue2.js') }}"></script>
+        <script src="{{ asset('assets/js/axios.js') }}"></script>
+    {% endblock %}
+
+
+    {% block mainpage  %}
+
+        <div class="ui breadcrumb" style="margin-top: 10px; margin-bottom: 20px">
+            <a class="section" href="{{ path('homepage') }}">Acceuil</a>
+            <div class="divider"> / </div>
+            <div class="section active">PARTENAIRE</div>
+            <div class="divider"> / </div>
+            <div class="active section">Gerer</div>
+        </div>
+
+        <div class="ui medium header">Gerer les partenaires</div>
+
+        <div id="app">
+            <div class="eleven wide column">
+
+                <table class="ui celled table">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nom</th>
+                        <th>Sigle</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(partenaires,index) in partenaires">
+                        <td>${partenaires.id}</td>
+                        <td>${partenaires.nomPar}</td>
+                        <td>${partenaires.siglePar}</td>
+                        <td>
+                            <button class="ui primary basic button more" v-on:click="updatePart(index)"><i class="fa fa-info " style="margin-right: 5px"></i>Details</button>
+                            <button class="ui negative basic button" v-on:click="deletePartModal(index)"><i class="fa fa-trash" style="margin-right: 5px" ></i>Supprimer</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="ui basic modal">
+                <div class="ui icon header">
+                    <i class="archive icon"></i>
+                    Supprimer cet partenaire
+                </div>
+                <div class="content">
+                    <p class="centered center">Etes vous sur de vouloir supprimer ce partenaire?</p>
+                    <p>Les subventions de ce partenaire seront aussi supprimes</p>
+                </div>
+                <div class="actions">
+                    <div class="ui red basic cancel inverted button">
+                        <i class="remove icon"></i>
+                        Non
+                    </div>
+                    <div v-on:click="deletePartenaire()" class="ui green ok inverted button" >
+                        <i class="checkmark icon"></i>
+                        Oui
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui long modal" id="manageModal">
+                <div class="ui icon header">
+                    ${partenaire.nomPar}
+                </div>
+                <div class="content">
+                    <div class="ui grid">
+                        <div class="eleven wide column">
+                            <div class="ui form">
+                                <div class="field">
+                                    <label> Sigle du partenaire </label>
+                                    <input type="text" v-model="partenaire.siglePar">
+                                </div>
+                                <div class="field">
+                                    <label> Nom du partenaire </label>
+                                    <input type="text" v-model="partenaire.nomPar">
+                                </div>
+                                <button class="ui button" v-on:click="commitChanges()">Modifier</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="actions">
+                    <div class="ui cancel red button">Annuler</div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+        <script>
+            window.onload = function () {
+
+
+                var app = new Vue({
+                    delimiters: ['${', '}'],
+                    el: '#app',
+                    data: {
+                        partenaires: [],
+                        index: '',
+                        ind: '',
+                        delected : false,
+                        partenaire: {}
+                    },
+
+                    mounted: function () {
+                        self = this
+                        axios.get('/partenaire/get')
+                            .then(function (response) {
+                                console.log(response)
+                                if (response.data !== 0){
+                                    self.partenaires = response.data
+                                }
+                            })
+                    },
+
+                    methods : {
+                        deletePartModal: function (index) {
+                            this.index = index
+                            console.log(this.index)
+                            $('.ui.basic.modal')
+                                .modal('show', {
+                                    closable : false
+                                })
+                            ;
+                        },
+
+                        deletePartenaire: function () {
+                            part = this.partenaires[this.index];
+                            console.log(this.index);
+                            self = this
+                            axios.post('/partenaire/delete',part.id)
+                                .then(function (response) {
+                                    if (response !== 1) {
+                                        self.partenaires.splice(self.index)
+                                        self.alert = true
+                                    }
+                                })
+                        },
+
+
+                        updatePart: function (index) {
+                            this.ind = index
+                            $('#manageModal')
+                                .modal('show', {
+                                    closable : false
+                                })
+                            ;
+                            this.partenaire = Object.assign({},this.partenaires[this.ind]);
+                        },
+
+                        commitChanges: function () {
+                            axios.post('/partenaire/modifier', this.partenaire)
+                                .then(function (response) {
+                                    if (response.data === 0){
+                                        location.reload()
+                                    }
+                                })
+                        }
+
+
+
+                    }
+                })
+            }
+        </script>
+
+    {% endblock %}

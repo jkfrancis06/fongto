@@ -1,0 +1,269 @@
+{% extends "base.html.twig" %}
+
+
+    {% block additionnalcss %}
+        <link rel="stylesheet" href="{{ asset('assets/calendar/calendar.css') }}">
+    {% endblock %}
+
+    {% block additionnaljs %}
+        <script rel="stylesheet" src="{{ asset('assets/calendar/calendar.js') }}"></script>
+    {% endblock %}
+
+
+{% block mainpage  %}
+
+<div class="ui breadcrumb" style="margin-top: 10px; margin-bottom: 20px">
+    <a class="section" href="{{ path('homepage') }}">Acceuil</a>
+    <div class="divider"> / </div>
+    <div class="section active">ONG/ASSOCIATION</div>
+    <div class="divider"> / </div>
+    <div class="active section">Ajouter</div>
+</div>
+
+<div class="ui medium header">Ajouter une ONG/ASSOCIATION</div>
+
+<div class="divider"></div>
+
+    {% for message in app.session.flashbag.get('create_org') %}
+        <div class="ui positive message">
+            <i class="close icon"></i>
+            <div class="header">
+                L'organisme a été cree avec success
+            </div>
+        </div>
+    {% endfor %}
+
+
+
+<div class="ui grid">
+    <div class="eleven wide column">
+        {{ form_start(form, {'attr': {'class': 'ui form'}}) }}
+
+        <div class="field">
+            <label> {{ form_label(form.nom, "Nom de L'organisation", {'label_attr': {'class': 'validate'}}) }}</label>
+            {{ form_widget(form.nom, {'attr': {'class': 'validate'}}) }}
+            {% if form_errors(form.nom) %}
+                <div class="ui pointing red basic label">
+                    {{ form_errors(form.nom) }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="field">
+            <label> {{ form_label(form.sigle, "Sigle", {'label_attr': {'class': 'validate'}}) }}</label>
+            {{ form_widget(form.sigle, {'attr': {'class': 'validate'}}) }}
+            {% if form_errors(form.sigle) %}
+                <div class="ui pointing red basic label">
+                    {{ form_errors(form.sigle) }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="field">
+            <label>Forme juridique</label>
+            <select name="forme_juridique" required>
+                <option value="">--</option>
+                <option value="1">ONG</option>
+                <option value="0">Association</option>
+            </select>
+        </div>
+        <div class="field">
+            <div class="ui grid">
+                <div class="six wide column">
+
+                    <div class="ui calendar " id="example1">
+                        <div class="ui field">
+                            <label>Date de creation</label>
+                            <input id="cal" name="dateCreation" type="text" placeholder="Date" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="field">
+            <label> {{ form_label(form.lieuCreation, "Lieu de creation", {'label_attr': {'class': 'validate'}}) }}</label>
+            {{ form_widget(form.lieuCreation, {'attr': {'class': 'validate'}}) }}
+            {% if form_errors(form.lieuCreation) %}
+                <div class="ui pointing red basic label">
+                    {{ form_errors(form.lieuCreation) }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="field">
+            <label> {{ form_label(form.numeroEnr, "Numero d'enregistrement", {'label_attr': {'class': 'validate'}}) }}</label>
+            {{ form_widget(form.numeroEnr, {'attr': {'class': 'validate'}}) }}
+            {% if form_errors(form.numeroEnr) %}
+                <div class="ui pointing red basic label">
+                    {{ form_errors(form.numeroEnr) }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="field">
+            <div class="ui grid">
+                <div class="six wide column">
+                    <div class="ui calendar " id="example2">
+                        <div class="ui field">
+                            <label class="validate">Date d'enregistrement</label>
+                            <input class="validate" id="cal" name="dateEnr" type="text" placeholder="Date" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="field">
+            <label> {{ form_label(form.villeEnr, "Ville d'enregistrement", {'label_attr': {'class': 'validate'}}) }}</label>
+            {{ form_widget(form.villeEnr, {'attr': {'class': 'validate'}}) }}
+            {% if form_errors(form.villeEnr) %}
+                <div class="ui pointing red basic label">
+                    {{ form_errors(form.villeEnr) }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="field">
+            <label> {{ form_label(form.paysEnr, "Pays d'enregistrement", {'label_attr': {'class': 'validate'}}) }}</label>
+            {{ form_widget(form.paysEnr, {'attr': {'class': 'validate'}}) }}
+            {% if form_errors(form.paysEnr) %}
+                <div class="ui pointing red basic label">
+                    {{ form_errors(form.paysEnr) }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="field">
+            <label> {{ form_label(form.missionOrg, "Mission de l'organistaion", {'label_attr': {'class': 'validate'}}) }}</label>
+            {{ form_widget(form.missionOrg, {'attr': {'class': 'validate'}}) }}
+            {% if form_errors(form.missionOrg) %}
+                <div class="ui pointing red basic label">
+                    {{ form_errors(form.missionOrg) }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="field">
+            <label> {{ form_label(form.objectifOrg, "Objectif de l'organistaion", {'label_attr': {'class': 'validate'}}) }}</label>
+            {{ form_widget(form.objectifOrg, {'attr': {'class': 'validate'}}) }}
+            {% if form_errors(form.objectifOrg) %}
+                <div class="ui pointing red basic label">
+                    {{ form_errors(form.objectifOrg) }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="field">
+            <label> {{ form_label(form.adresseOrg, "Adresse de l'organistaion", {'label_attr': {'class': 'validate'}}) }}</label>
+            {{ form_widget(form.adresseOrg, {'attr': {'class': 'validate'}}) }}
+            {% if form_errors(form.adresseOrg) %}
+                <div class="ui pointing red basic label">
+                    {{ form_errors(form.adresseOrg) }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="field">
+            <label> {{ form_label(form.typeOrg, "Type de l'organistaion", {'label_attr': {'class': 'validate'}}) }}</label>
+            {{ form_widget(form.typeOrg, {'attr': {'class': 'validate'}}) }}
+            {% if form_errors(form.typeOrg) %}
+                <div class="ui pointing red basic label">
+                    {{ form_errors(form.typeOrg) }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="field six wide column">
+            <div class="ui calendar" id="example3">
+                <div class="ui field">
+                    <label>Annee d'adhesion</label>
+                    <input id="cal" name="anneeAdh" type="text" placeholder="annee" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="field">
+            <label> {{ form_label(form.numAdh, "Numero d'adhesion", {'label_attr': {'class': 'validate'}}) }}</label>
+            {{ form_widget(form.numAdh, {'attr': {'class': 'validate'}}) }}
+            {% if form_errors(form.numAdh) %}
+                <div class="ui pointing red basic label">
+                    {{ form_errors(form.numAdh) }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="field">
+            {{ form_widget(form.domaine, {'attr': {'class': 'validate'}}) }}
+            {% if form_errors(form.domaine) %}
+                <div class="ui pointing red basic label">
+                    {{ form_errors(form.domaine) }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="field">
+            {{ form_widget(form.directeur, {'attr': {'class': 'validate'}}) }}
+            {% if form_errors(form.directeur) %}
+                <div class="ui pointing red basic label">
+                    {{ form_errors(form.directeur) }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="field">
+            {{ form_widget(form.president, {'attr': {'class': 'validate'}}) }}
+            {% if form_errors(form.president) %}
+                <div class="ui pointing red basic label">
+                    {{ form_errors(form.president) }}
+                </div>
+            {% endif %}
+        </div>
+
+        {{ form_widget(form.Ajouter, {'attr': {'class': 'ui button'}}) }}
+
+        {{ form_rest(form) }}
+
+        {# Fermeture de la balise <form> du formulaire HTML #}
+        {{ form_end(form) }}
+
+
+    </div>
+
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('#example1').calendar({
+            monthFirst: false,
+            type: 'date',
+            formatter: {
+                date: function (date, settings) {
+                    if (!date) return '';
+                    var day = date.getDate();
+                    var month = date.getMonth() + 1;
+                    var year = date.getFullYear();
+                    return day + '-' + month + '-' + year;
+                }
+            }
+        });
+        $('#example2').calendar({
+            monthFirst: false,
+            type: 'date',
+            formatter: {
+                date: function (date, settings) {
+                    if (!date) return '';
+                    var day = date.getDate();
+                    var month = date.getMonth() + 1;
+                    var year = date.getFullYear();
+                    return day + '-' + month + '-' + year;
+                }
+            }
+        });
+        $('#example3').calendar({
+            type: 'year'
+        });
+    })
+</script>
+
+{% endblock %}
+

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FONGTO</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/js/semantic.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/semantic.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/fixed-sidebar.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/font-awesome/css/font-awesome.css') }}">
+    {% block additionnalcss %}
+    {% endblock %}
+    {% block additionnaljs %} {% endblock %}
+</head>
+<body>
+
+<div class="ui top attached  secondary menu">
+    <a class="item" id="sidebar">
+        <i class="fa fa-bars" style="margin-right: 5px"></i> Menu
+    </a>
+    <div class="header item">
+        <h2 class="ui header">FONGTO </h2>
+    </div>
+
+    <div class="right menu">
+        <div class="item">
+            <img class="ui mini circular image" src="{{ asset('assets/img/eve.png') }}">
+            <div class="ui  dropdown link item" tabindex="0" id="hybrid">
+                <span>sylvia GOMADO</span>
+                <i class="dropdown icon"></i>
+                <div class="menu" tabindex="-1">
+                    <div class="divider"></div>
+                    <div class="item">
+                        <a href="#"><i class="fa fa-power-off" style="margin-right: 5px"></i>Deconnexion</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="ui bottom attached segment">
+    <div class="ui inverted left inline vertical demo sidebar menu">
+        <div class="item">
+            <div class="header">Home</div>
+            <div class="menu">
+                <a class="item" href="{{ path('homepage') }}">Tableau de bord</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="header">ONG/ASSOCIATION</div>
+            <div class="menu">
+                <a class="item" href="{{ path('creerOrganisme') }}">Ajouter</a>
+                <a class="item" href="{{ path('gererOrganisme') }}">Gerer</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="header">PARTENAIRES</div>
+            <div class="menu">
+                <a class="item" href="{{ path('ajouterPartenaire') }}">Ajouter</a>
+                <a class="item" href="{{ path('gererPartenaire') }}">Gestion</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="header">COTISATION</div>
+            <div class="menu">
+                <a class="item">Ajouter</a>
+                <a class="item">Gerer</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="header">SUBVENTION</div>
+            <div class="menu">
+                <a class="item">Ajouter </a>
+                <a class="item">Gerer</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="header">ACTIVITE</div>
+            <div class="menu">
+                <a class="item">Ajouter </a>
+                <a class="item">Gerer</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="header">RAPPORT</div>
+            <div class="menu">
+                <a class="item">Ajouter </a>
+                <a class="item">Gerer</a>
+            </div>
+        </div>
+    </div>
+    <div class="pusher">
+        <div class="ui basic segment">
+            {% block mainpage %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('select.dropdown')
+            .dropdown()
+        ;
+    })
+    $('.ui.sidebar').sidebar({
+        context: $('.bottom.segment')
+    })
+        .sidebar('attach events', '.menu .item');
+
+    $('#hybrid')
+        .dropdown({
+            on: 'hover'
+        })
+    ;
+</script>
+</body>
+</html>

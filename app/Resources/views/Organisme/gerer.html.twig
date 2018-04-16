@@ -1,0 +1,283 @@
+{% extends "base.html.twig" %}
+
+
+    {% block additionnalcss %}
+        <link rel="stylesheet" href="{{ asset('assets/calendar/calendar.css') }}">
+    {% endblock %}
+
+    {% block additionnaljs %}
+
+        <script src="{{ asset('assets/js/vue2.js') }}"></script>
+        <script src="{{ asset('assets/js/axios.js') }}"></script>
+        <script rel="stylesheet" src="{{ asset('assets/calendar/calendar.js') }}"></script>
+        <script src="{{ asset('assets/js/manage_org.js') }}"></script>
+    {% endblock %}
+
+
+{% block mainpage  %}
+
+    <div class="ui breadcrumb" style="margin-top: 10px; margin-bottom: 20px">
+        <a class="section" href="{{ path('homepage') }}">Acceuil</a>
+        <div class="divider"> / </div>
+        <div class="section active">ONG/ASSOCIATION</div>
+        <div class="divider"> / </div>
+        <div class="active section">Gerer</div>
+    </div>
+
+    <div class="ui medium header">Gerer les ONG/ASSOCIATION</div>
+
+    <div class="divider"></div>
+
+    <template v-if="delected == true">
+        <div class="ui positive message">
+            <i class="close icon"></i>
+            <div class="header">
+                L'organisme a été supprimer avec success
+            </div>
+        </div>
+    </template>
+
+
+    <div class="ui grid" id="app">
+
+        <div class="eleven wide column">
+            <div class="ui form">
+                <div class="inline fields">
+                    <label>Forme juridique</label>
+                    <div class="field">
+                        <select v-model="type" name="forme_juridique" required>
+                            <option value="">--</option>
+                            <option value="1">ONG</option>
+                            <option value="0">Association</option>
+                            <option value="2">Tous</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <button class="ui button" v-on:click="getOrganistions()">Valider</button>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <table class="ui celled table">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Nom</th>
+                            <th>Sigle</th>
+                            <th>Forme Juridique</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(org,index) in organisation">
+                            <td>${org.id}</td>
+                            <td>${org.nom}</td>
+                            <td>${org.sigle}</td>
+                            <td>
+                                <template v-if="org.formJuridique == 0">
+                                    Association
+                                </template>
+                                <template v-if="org.formJuridique == 1">
+                                    ONG
+                                </template>
+                            </td>
+                            <td>
+                                <button class="ui primary basic button more" v-on:click="manageOrgMoadal(index)"><i class="fa fa-info " style="margin-right: 5px"></i>Details</button>
+                                <button class="ui negative basic button" v-on:click="deleteOrgModal(index)"><i class="fa fa-trash" style="margin-right: 5px" ></i>Supprimer</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="ui basic modal">
+                <div class="ui icon header">
+                    <i class="archive icon"></i>
+                    Supprimer cet organisme
+                </div>
+                <div class="content">
+                    <p>Etes vous sur de vouloir supprimer cet organisme?</p>
+                </div>
+                <div class="actions">
+                    <div class="ui red basic cancel inverted button">
+                        <i class="remove icon"></i>
+                        Non
+                    </div>
+                    <div v-on:click="deleteOrg()" class="ui green ok inverted button">
+                        <i class="checkmark icon"></i>
+                        Oui
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="ui long modal" id="manageModal">
+                <div class="ui icon header">
+                    ${org.nom}
+                </div>
+                <div class="content">
+                    <div class="ui grid">
+                        <div class="eleven wide column">
+
+                            <div class="ui form">
+                                <div class="field">
+                                    <label> Nom de L'organisation </label>
+                                    <input type="text" v-model="org.nom">
+                                </div>
+                                <div class="field">
+                                    <label> Sigle</label>
+                                    <input type="text" v-model="org.sigle">
+                                </div>
+                                <div class="field">
+                                    <label>Forme juridique</label>
+                                    <select v-model="org.formJuridique" name="forme_juridique" required>
+                                        <option value="">--</option>
+                                        <option value="1">ONG</option>
+                                        <option value="0">Association</option>
+                                    </select>
+                                </div>
+
+                                <div class="field">
+                                    <div class="ui grid">
+                                        <div class="six wide column">
+                                            <div class="ui calendar " id="example1">
+                                                <div class="ui field">
+                                                    <label>Date de creation</label>
+                                                    <input id="cal" class="dateCreation" v-model="org.dateCreation" name="dateCreation" type="text" placeholder="Date" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <label> Lieu de creation</label>
+                                    <input type="text" v-model="org.lieuCreation">
+                                </div>
+
+                                <div class="field">
+                                    <label> Numero d'enregistrement</label>
+                                    <input type="text" v-model="org.numeroEnr">
+                                </div>
+
+                                <div class="field">
+                                    <div class="ui grid">
+                                        <div class="six wide column">
+                                            <div class="ui calendar " id="example2">
+                                                <div class="ui field">
+                                                    <label class="validate">Date d'enregistrement</label>
+                                                    <input class="validate dateEnr"  v-model="org.dateEnr" id="cal" name="dateEnr" type="text" placeholder="Date" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <label> Ville d'enregistrement</label>
+                                    <input type="text" v-model="org.villeEnr">
+                                </div>
+
+                                <div class="field">
+                                    <label> Pays d'enregistrement</label>
+                                    <input type="text" v-model="org.paysEnr">
+                                </div>
+
+                                <div class="field">
+                                    <label> Mission de l'organistaion</label>
+                                    <textarea v-model="org.missionOrg"></textarea>
+                                </div>
+
+                                <div class="field">
+                                    <label>Objectif de l'organistaion</label>
+                                    <textarea v-model="org.objectifOrg"></textarea>
+                                </div>
+
+                                <div class="field">
+                                    <label> Adresse de l'organistaion</label>
+                                    <input type="text" v-model="org.adresseOrg">
+                                </div>
+
+                                <div class="field">
+                                    <label> Type de l'organistaion</label>
+                                    <input type="text" v-model="org.typeOrg">
+                                </div>
+
+                                <div class="field six wide column">
+                                    <div class="ui calendar" id="example3">
+                                        <div class="ui field">
+                                            <label>Annee d'adhesion</label>
+                                            <input id="cal" class="anneeAdh" v-model="org.anneeAdh" name="anneeAdh"  type="text" placeholder="annee" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <label> Numero d'adhesion</label>
+                                    <input type="text"  v-model="org.numAdh">
+                                </div>
+
+                                <div class="field">
+                                    <label> Domaine primaire</label>
+                                    <textarea type="text" v-model="org.domaine.domainePri"></textarea>
+                                </div>
+
+                                <div class="field">
+                                    <label> Domaine secondaire</label>
+                                    <textarea type="text" v-model="org.domaine.domaineSec"></textarea>
+                                </div>
+
+                                <div class="field">
+                                    <label> Nom du directeur</label>
+                                    <input type="text" v-model="org.directeur.nomDir">
+                                </div>
+
+                                <div class="field">
+                                    <label> Prenom du directeur</label>
+                                    <input type="text" v-model="org.directeur.prenomDir">
+                                </div>
+
+                                <div class="field">
+                                    <label> Adresse du directeur</label>
+                                    <input type="text" v-model="org.directeur.adrDir">
+                                </div>
+
+                                <div class="field">
+                                    <label> Nom du president</label>
+                                    <input type="text" v-model="org.president.nomPre">
+                                </div>
+
+                                <div class="field">
+                                    <label> Prenom du president</label>
+                                    <input type="text" v-model="org.president.prenomPre">
+                                </div>
+
+                                <div class="field">
+                                    <label> Adresse du president</label>
+                                    <input type="text" v-model="org.president.adrPre">
+                                </div>
+
+                                <button class="ui button" v-on:click="commitChanges()">Modifier</button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <div class="ui cancel red button">Annuler</div>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
