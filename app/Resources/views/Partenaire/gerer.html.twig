@@ -43,33 +43,12 @@
                         <td>${partenaires.siglePar}</td>
                         <td>
                             <button class="ui primary basic button more" v-on:click="updatePart(index)"><i class="fa fa-info " style="margin-right: 5px"></i>Details</button>
-                            <button class="ui negative basic button" v-on:click="deletePartModal(index)"><i class="fa fa-trash" style="margin-right: 5px" ></i>Supprimer</button>
                         </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
 
-            <div class="ui basic modal">
-                <div class="ui icon header">
-                    <i class="archive icon"></i>
-                    Supprimer cet partenaire
-                </div>
-                <div class="content">
-                    <p class="centered center">Etes vous sur de vouloir supprimer ce partenaire?</p>
-                    <p>Les subventions de ce partenaire seront aussi supprimes</p>
-                </div>
-                <div class="actions">
-                    <div class="ui red basic cancel inverted button">
-                        <i class="remove icon"></i>
-                        Non
-                    </div>
-                    <div v-on:click="deletePartenaire()" class="ui green ok inverted button" >
-                        <i class="checkmark icon"></i>
-                        Oui
-                    </div>
-                </div>
-            </div>
 
             <div class="ui long modal" id="manageModal">
                 <div class="ui icon header">
@@ -112,7 +91,6 @@
                     el: '#app',
                     data: {
                         partenaires: [],
-                        index: '',
                         ind: '',
                         delected : false,
                         partenaire: {}
@@ -130,29 +108,6 @@
                     },
 
                     methods : {
-                        deletePartModal: function (index) {
-                            this.index = index
-                            console.log(this.index)
-                            $('.ui.basic.modal')
-                                .modal('show', {
-                                    closable : false
-                                })
-                            ;
-                        },
-
-                        deletePartenaire: function () {
-                            part = this.partenaires[this.index];
-                            console.log(this.index);
-                            self = this
-                            axios.post('/partenaire/delete',part.id)
-                                .then(function (response) {
-                                    if (response !== 1) {
-                                        self.partenaires.splice(self.index)
-                                        self.alert = true
-                                    }
-                                })
-                        },
-
 
                         updatePart: function (index) {
                             this.ind = index

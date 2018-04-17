@@ -3,12 +3,15 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * Subvention
  *
  * @ORM\Table(name="subvention")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SubventionRepository")
+ * @Vich\Uploadable
  */
 class Subvention
 {
@@ -31,7 +34,7 @@ class Subvention
     /**
      * @var string
      *
-     * @ORM\Column(name="type_sub", type="text")
+     * @ORM\Column(name="type_sub", type="string", length=255)
      */
     private $typeSub;
 
@@ -50,10 +53,36 @@ class Subvention
     private $estimation;
 
     /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Activite")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $activite;
+
+    /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Partenaire")
      * @ORM\JoinColumn(nullable=false)
      */
     private $partenaire;
+
+
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @var string
+     */
+    private $filename;
+
+    /**
+     * @Vich\UploadableField(mapping="subvention", fileNameProperty="filename")
+     * @var File
+     */
+    private $file;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @var \DateTime
+     */
+    private $updatedAt;
 
 
     /**
@@ -184,5 +213,95 @@ class Subvention
     public function getPartenaire()
     {
         return $this->partenaire;
+    }
+
+    /**
+     * Set activite.
+     *
+     * @param \AppBundle\Entity\Activite $activite
+     *
+     * @return Subvention
+     */
+    public function setActivite(\AppBundle\Entity\Activite $activite)
+    {
+        $this->activite = $activite;
+
+        return $this;
+    }
+
+    /**
+     * Get activite.
+     *
+     * @return \AppBundle\Entity\Activite
+     */
+    public function getActivite()
+    {
+        return $this->activite;
+    }
+
+    public function setFile(File $image = null)
+    {
+        $this->file = $image;
+
+        // VERY IMPORTANT:
+        // It is required that at least one field changes if you are using Doctrine,
+        // otherwise the event listeners won't be called and the file is lost
+        if ($image) {
+            // if 'updatedAt' is not defined in your entity, use another property
+            $this->updatedAt = new \DateTime('now');
+        }
+    }
+
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * Set filename.
+     *
+     * @param string $filename
+     *
+     * @return Subvention
+     */
+    public function setFilename($filename)
+    {
+        $this->filename = $filename;
+
+        return $this;
+    }
+
+    /**
+     * Get filename.
+     *
+     * @return string
+     */
+    public function getFilename()
+    {
+        return $this->filename;
+    }
+
+    /**
+     * Set updatedAt.
+     *
+     * @param \DateTime $updatedAt
+     *
+     * @return Subvention
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt.
+     *
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
     }
 }

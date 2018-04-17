@@ -3,12 +3,15 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * Subvention
  *
  * @ORM\Table(name="subvention")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SubventionRepository")
+ * @Vich\Uploadable
  */
 class Subvention
 {
@@ -31,7 +34,7 @@ class Subvention
     /**
      * @var string
      *
-     * @ORM\Column(name="type_sub", type="text")
+     * @ORM\Column(name="type_sub", type="string", length=255)
      */
     private $typeSub;
 
@@ -50,10 +53,36 @@ class Subvention
     private $estimation;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBunde\Entity\Partenaire")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Activite")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $activite;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Partenaire")
      * @ORM\JoinColumn(nullable=false)
      */
     private $partenaire;
+
+
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @var string
+     */
+    private $filename;
+
+    /**
+     * @Vich\UploadableField(mapping="subvention", fileNameProperty="filename")
+     * @var File
+     */
+    private $file;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @var \DateTime
+     */
+    private $updatedAt;
 
 
     /**
@@ -165,11 +194,11 @@ class Subvention
     /**
      * Set partenaire.
      *
-     * @param \AppBunde\Entity\Partenaire $partenaire
+     * @param Partenaire $partenaire
      *
      * @return Subvention
      */
-    public function setPartenaire(\AppBunde\Entity\Partenaire $partenaire)
+    public function setPartenaire(Partenaire $partenaire)
     {
         $this->partenaire = $partenaire;
 
@@ -179,10 +208,34 @@ class Subvention
     /**
      * Get partenaire.
      *
-     * @return \AppBunde\Entity\Partenaire
+     * @return Partenaire
      */
     public function getPartenaire()
     {
         return $this->partenaire;
+    }
+
+    /**
+     * Set activite.
+     *
+     * @param \AppBundle\Entity\Activite $activite
+     *
+     * @return Subvention
+     */
+    public function setActivite(\AppBundle\Entity\Activite $activite)
+    {
+        $this->activite = $activite;
+
+        return $this;
+    }
+
+    /**
+     * Get activite.
+     *
+     * @return \AppBundle\Entity\Activite
+     */
+    public function getActivite()
+    {
+        return $this->activite;
     }
 }

@@ -65,3 +65,33 @@ swiftmailer:
     username: '%mailer_user%'
     password: '%mailer_password%'
     spool: { type: memory }
+
+
+vich_uploader:
+    db_driver: orm
+    mappings:
+        logo:
+            uri_prefix: /logo/
+            upload_destination: '%kernel.root_dir%/../web/logo/'
+            namer: vich_uploader.namer_uniqid
+            delete_on_update: true
+            delete_on_remove: true
+        subvention:
+            uri_prefix: /subvention/
+            upload_destination: '%kernel.root_dir%/../web/subvention/'
+            namer: vich_uploader.namer_uniqid
+            delete_on_update: true
+            delete_on_remove: true
+        activite:
+            uri_prefix: /activite/
+            upload_destination: '%kernel.root_dir%/../web/activite/'
+            namer: vich_uploader.namer_uniqid
+            delete_on_update: true
+            delete_on_remove: true
+        rapport:
+            uri_prefix: /rapport/
+            upload_destination: '%kernel.root_dir%/../web/rapport/'
+            namer: vich_uploader.namer_uniqid
+            delete_on_update: true
+            delete_on_remove: true
+

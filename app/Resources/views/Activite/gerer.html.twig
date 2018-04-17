@@ -1,0 +1,59 @@
+{% extends "base.html.twig" %}
+
+
+    {% block additionnalcss %}
+    {% endblock %}
+
+    {% block additionnaljs %}
+
+    {% endblock %}
+
+
+{% block mainpage  %}
+
+    <div class="ui breadcrumb" style="margin-top: 10px; margin-bottom: 20px">
+        <a class="section" href="{{ path('homepage') }}">Acceuil</a>
+        <div class="divider"> / </div>
+        <div class="section active">ACTIVITE</div>
+        <div class="divider"> / </div>
+        <div class="active section">Gerer</div>
+    </div>
+
+    <div class="ui medium header">Gerer les activites</div>
+
+    <div class="divider"></div>
+
+    <div>
+        <table class="ui celled table">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Libelle</th>
+                <th>Date de debut</th>
+                <th>Date de fin</th>
+                <th>Type d'activite</th>
+                <th>Lieu d'activite</th>
+                <th>Montant de l'activite</th>
+                <th>Libelle du projet</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for activite in activite %}
+                <tr>
+                    <td>{{ activite.id }}</td>
+                    <td>{{ activite.libelleAct }}</td>
+                    <td>{{ activite.dateDeb }}</td>
+                    <td>{{ activite.dateFin }}</td>
+                    <td>{{ activite.typeAct }}</td>
+                    <td>{{ activite.lieuAct }}</td>
+                    <td>{{ activite.montAct }}</td>
+                    <td>{{ activite.projet.libellePro }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+

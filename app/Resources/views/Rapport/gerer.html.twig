@@ -1,0 +1,53 @@
+{% extends "base.html.twig" %}
+
+
+    {% block additionnalcss %}
+    {% endblock %}
+
+    {% block additionnaljs %}
+
+    {% endblock %}
+
+
+{% block mainpage  %}
+
+    <div class="ui breadcrumb" style="margin-top: 10px; margin-bottom: 20px">
+        <a class="section" href="{{ path('homepage') }}">Acceuil</a>
+        <div class="divider"> / </div>
+        <div class="section active">ACTIVITE</div>
+        <div class="divider"> / </div>
+        <div class="active section">Gerer</div>
+    </div>
+
+    <div class="ui medium header">Gerer les activites</div>
+
+    <div class="divider"></div>
+
+    <div>
+        <table class="ui celled table">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date de rapport</th>
+                <th>Activite</th>
+                <th>Organisme</th>
+                <th>Fichier</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for rapport in rapport %}
+                <tr>
+                    <td>{{ rapport.id }}</td>
+                    <td>{{ rapport.dateRapport }}</td>
+                    <td>{{ rapport.activite.libelleAct }}</td>
+                    <td>{{ rapport.organisme.nom }}</td>
+                    <td><a href="{{ 'rapport/' }}{{ rapport.fileName }}">Voir</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+

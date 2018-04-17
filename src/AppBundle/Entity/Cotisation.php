@@ -36,7 +36,7 @@ class Cotisation
     private $dateCot;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Organisme")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Organisme",cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $organisme;

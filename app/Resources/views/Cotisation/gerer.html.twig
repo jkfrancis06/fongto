@@ -1,0 +1,119 @@
+{% extends "base.html.twig" %}
+
+
+    {% block additionnalcss %}
+    {% endblock %}
+
+    {% block additionnaljs %}
+
+        <script src="{{ asset('assets/js/vue2.js') }}"></script>
+        <script src="{{ asset('assets/js/axios.js') }}"></script>
+
+    {% endblock %}
+
+
+{% block mainpage  %}
+
+    <div class="ui breadcrumb" style="margin-top: 10px; margin-bottom: 20px">
+        <a class="section" href="{{ path('homepage') }}">Acceuil</a>
+        <div class="divider"> / </div>
+        <div class="section active">COTISATION</div>
+        <div class="divider"> / </div>
+        <div class="active section">Gerer</div>
+    </div>
+
+    <div class="ui medium header">Gerer les cotisations</div>
+
+    <div class="divider"></div>
+
+    <div id="app">
+        <div class="eleven wide column">
+            <div class="ui form">
+                <div class="inline fields">
+                    <label>Trier par organisme</label>
+                    <div class="field">
+                        <select v-model="organismeId" required>
+                            <option value="0">Tous</option>
+                            <option value="">--</option>
+                            <template v-for="organismes in organismes">
+                                <option  v-bind:value="organismes.id" >${organismes.nom}</option>
+                            </template>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <button class="ui button" v-on:click="loadCotisation()">Valider</button>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <table class="ui celled table">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Organisation</th>
+                        <th>Montant</th>
+                        <th>Date</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(cotisations,index) in cotisations">
+                        <td>${cotisations.id}</td>
+                        <td>${cotisations.organisme.nom}</td>
+                        <td>${cotisations.montant}</td>
+                        <td>${cotisations.dateCot}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script>
+        window.onload = function () {
+
+
+            var app = new Vue({
+                delimiters: ['${', '}'],
+                el: '#app',
+                data: {
+                    organismes: [],
+                    organismeId: '',
+                    cotisations: []
+                },
+
+                mounted: function () {
+                    self = this
+                    axios.get('/organisme/get')
+                        .then(function (response) {
+                            if (response.data !== 1){
+                                self.organismes = response.data
+                            }
+                        })
+                },
+
+                methods: {
+                    loadCotisation: function () {
+                        self = this
+                        console.log(this.organismeId);
+                        axios.post('/cotisation/get',this.organismeId)
+                            .then(function (response) {
+                                console.log(response.data);
+                                if (response.data !== 1){
+                                    self.cotisations = response.data
+                                }else {
+                                    self.cotisations = []
+                                }
+                            })
+                    }
+                }
+            })
+        }
+    </script>
+
+
+
+{% endblock %}
+

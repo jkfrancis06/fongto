@@ -1,0 +1,57 @@
+{% extends "base.html.twig" %}
+
+
+    {% block additionnalcss %}
+    {% endblock %}
+
+    {% block additionnaljs %}
+
+    {% endblock %}
+
+
+{% block mainpage  %}
+
+    <div class="ui breadcrumb" style="margin-top: 10px; margin-bottom: 20px">
+        <a class="section" href="{{ path('homepage') }}">Acceuil</a>
+        <div class="divider"> / </div>
+        <div class="section active">SUBVENTION</div>
+        <div class="divider"> / </div>
+        <div class="active section">Gerer</div>
+    </div>
+
+    <div class="ui medium header">Gerer les subventions</div>
+
+    <div class="divider"></div>
+
+    <div>
+        <table class="ui celled table">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Libelle</th>
+                <th>Type de subvention</th>
+                <th>Date de subvention</th>
+                <th>Estimation de subvention</th>
+                <th>Partenaire</th>
+                <th>Activite</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for subvention in subvention %}
+                <tr>
+                    <td>{{ subvention.id }}</td>
+                    <td>{{ subvention.libelleSub }}</td>
+                    <td>{{ subvention.typeSub }}</td>
+                    <td>{{ subvention.dateSub }}</td>
+                    <td>{{ subvention.estimation }}</td>
+                    <td>{{ subvention.partenaire.nomPar }}</td>
+                    <td>{{ subvention.activite.libelleAct }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+

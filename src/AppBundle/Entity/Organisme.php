@@ -4,6 +4,8 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\File;
 
 
 /**
@@ -11,10 +13,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="organisme")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\OrganismeRepository")
+ * @Vich\Uploadable
  */
 
-// TODO: Ajoouter la proprité logo qui peut etre null
-// TODO: Gerer l'upload de fichiers avec Vich upload Bundle
 
 class Organisme
 {
@@ -30,7 +31,7 @@ class Organisme
     /**
      * @var string
      *
-     * @ORM\Column(name="sigle", type="string", length=255, unique=true)
+     * @ORM\Column(name="sigle", type="string", length=255)
      * @Assert\NotBlank
      */
     private $sigle;
@@ -164,6 +165,28 @@ class Organisme
      * @Assert\Valid()
      */
     private $domaine;
+
+
+    /**
+     * @Vich\UploadableField(mapping="logo", fileNameProperty="logoName")
+     *
+     * @var File
+     */
+    private $logo;
+
+    /**
+     * @ORM\Column(type="string",nullable=true, length=255)
+     *
+     * @var string
+     */
+    private $logoName;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @var \DateTime
+     */
+    private $updatedAt;
 
 
 
@@ -607,5 +630,77 @@ class Organisme
     public function getDomaine()
     {
         return $this->domaine;
+    }
+
+
+    public function setLogo(File $image = null)
+    {
+        $this->logo = $image;
+
+        // VERY IMPORTANT:
+        // It is required that at least one field changes if you are using Doctrine,
+        // otherwise the event listeners won't be called and the file is lost
+        if ($image) {
+            // if 'updatedAt' is not defined in your entity, use another property
+            $this->updatedAt = new \DateTime('now');
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\File\File|null
+     */
+    public function getLogo()
+    {
+        return $this->logo;
+    }
+
+    /**
+     * Set logoName.
+     *
+     * @param string $logoName
+     *
+     * @return Organisme
+     */
+    public function setLogoName($logoName)
+    {
+        $this->logoName = $logoName;
+
+        return $this;
+    }
+
+    /**
+     * Get logoName.
+     *
+     * @return string
+     */
+    public function getLogoName()
+    {
+        return $this->logoName;
+    }
+
+    /**
+     * Set updatedAt.
+     *
+     * @param \DateTime $updatedAt
+     *
+     * @return Organisme
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt.
+     *
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
     }
 }

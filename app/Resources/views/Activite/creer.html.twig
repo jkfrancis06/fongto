@@ -1,0 +1,172 @@
+{% extends "base.html.twig" %}
+
+
+    {% block additionnalcss %}
+        <link rel="stylesheet" href="{{ asset('assets/calendar/calendar.css') }}">
+    {% endblock %}
+
+    {% block additionnaljs %}
+        <script rel="stylesheet" src="{{ asset('assets/calendar/calendar.js') }}"></script>
+    {% endblock %}
+
+
+{% block mainpage  %}
+
+
+    <div class="ui breadcrumb" style="margin-top: 10px; margin-bottom: 20px">
+        <a class="section" href="{{ path('homepage') }}">Acceuil</a>
+        <div class="divider"> / </div>
+        <div class="section active">ACTIVITE</div>
+        <div class="divider"> / </div>
+        <div class="active section">Ajouter</div>
+    </div>
+
+    <div class="ui medium header">Ajouter une activite</div>
+
+    <div class="divider"></div>
+
+    {% for message in app.session.flashbag.get('create_act') %}
+        <div class="ui positive message">
+            <i class="close icon"></i>
+            <div class="header">
+                L'activite a été cree avec succes
+            </div>
+        </div>
+
+    {% endfor %}
+
+    <div class="ui grid">
+        <div class="eleven wide column">
+            {{ form_start(form, {'attr': {'class': 'ui form'}}) }}
+            <div class="field">
+                <label> {{ form_label(form.libelleAct, "Libelle de l'activite", {'label_attr': {'class': 'validate'}}) }}</label>
+                {{ form_widget(form.libelleAct, {'attr': {'class': 'validate'}}) }}
+                {% if form_errors(form.libelleAct) %}
+                    <div class="ui pointing red basic label">
+                        {{ form_errors(form.libelleAct) }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="field">
+                <div class="ui grid">
+                    <div class="six wide column">
+
+                        <div class="ui calendar " id="example1">
+                            <div class="ui field">
+                                <label>Date de debut</label>
+                                <input id="cal" name="deb" type="text" placeholder="Date" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="ui grid">
+                    <div class="six wide column">
+                        <div class="ui calendar " id="example2">
+                            <div class="ui field">
+                                <label class="validate">Date de fin</label>
+                                <input class="validate" id="cal" name="fin" type="text" placeholder="Date" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label> {{ form_label(form.typeAct, "Type d'activite", {'label_attr': {'class': 'validate'}}) }}</label>
+                {{ form_widget(form.typeAct, {'attr': {'class': 'validate'}}) }}
+                {% if form_errors(form.typeAct) %}
+                    <div class="ui pointing red basic label">
+                        {{ form_errors(form.typeAct) }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="field">
+                <label> {{ form_label(form.lieuAct, "Lieu d'activite", {'label_attr': {'class': 'validate'}}) }}</label>
+                {{ form_widget(form.lieuAct, {'attr': {'class': 'validate'}}) }}
+                {% if form_errors(form.lieuAct) %}
+                    <div class="ui pointing red basic label">
+                        {{ form_errors(form.lieuAct) }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="field">
+                <label> {{ form_label(form.montAct, "Montant", {'label_attr': {'class': 'validate'}}) }}</label>
+                {{ form_widget(form.montAct, {'attr': {'class': 'validate'}}) }}
+                {% if form_errors(form.montAct) %}
+                    <div class="ui pointing red basic label">
+                        {{ form_errors(form.montAct) }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="field">
+                <label> {{ form_label(form.projet, "Projet", {'label_attr': {'class': 'validate'}}) }}</label>
+                {{ form_widget(form.projet, {'attr': {'class': 'validate'}}) }}
+                {% if form_errors(form.projet) %}
+                    <div class="ui pointing red basic label">
+                        {{ form_errors(form.projet) }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="field">
+                <label> {{ form_label(form.file, "Fichier", {'label_attr': {'class': 'validate'}}) }}</label>
+                {{ form_widget(form.file, {'attr': {'class': 'validate'}}) }}
+                {% if form_errors(form.file) %}
+                    <div class="ui pointing red basic label">
+                        {{ form_errors(form.file) }}
+                    </div>
+                {% endif %}
+            </div>
+
+
+            {{ form_widget(form.valider, {'attr': {'class': 'ui button'}}) }}
+
+
+            {{ form_rest(form) }}
+
+            {# Fermeture de la balise <form> du formulaire HTML #}
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#example1').calendar({
+                monthFirst: false,
+                type: 'date',
+                formatter: {
+                    date: function (date, settings) {
+                        if (!date) return '';
+                        var day = date.getDate();
+                        var month = date.getMonth() + 1;
+                        var year = date.getFullYear();
+                        return day + '-' + month + '-' + year;
+                    }
+                }
+            });
+            $('#example2').calendar({
+                monthFirst: false,
+                type: 'date',
+                formatter: {
+                    date: function (date, settings) {
+                        if (!date) return '';
+                        var day = date.getDate();
+                        var month = date.getMonth() + 1;
+                        var year = date.getFullYear();
+                        return day + '-' + month + '-' + year;
+                    }
+                }
+            });
+        })
+    </script>
+
+{% endblock %}
+

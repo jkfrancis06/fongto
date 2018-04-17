@@ -36,6 +36,7 @@ class OrganismeType extends AbstractType
             ->add('typeOrg')
 //            ->add('anneeAdh')
             ->add('numAdh')
+            ->add('logo',VichImageType::class, array('required' => false))
             ->add('Ajouter', SubmitType::class);
     }/**
      * {@inheritdoc}

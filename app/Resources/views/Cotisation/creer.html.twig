@@ -1,0 +1,71 @@
+{% extends "base.html.twig" %}
+
+
+    {% block additionnalcss %}
+    {% endblock %}
+
+    {% block additionnaljs %}
+
+    {% endblock %}
+
+
+{% block mainpage  %}
+
+
+    <div class="ui breadcrumb" style="margin-top: 10px; margin-bottom: 20px">
+        <a class="section" href="{{ path('homepage') }}">Acceuil</a>
+        <div class="divider"> / </div>
+        <div class="section active">COTISATION</div>
+        <div class="divider"> / </div>
+        <div class="active section">Ajouter</div>
+    </div>
+
+    <div class="ui medium header">Ajouter un partenaire</div>
+
+    <div class="divider"></div>
+
+    {% for message in app.session.flashbag.get('create_cot') %}
+        <div class="ui positive message">
+            <i class="close icon"></i>
+            <div class="header">
+                La cotisation a été cree avec succes
+            </div>
+        </div>
+    {% endfor %}
+
+    <div class="ui grid">
+        <div class="eleven wide column">
+            {{ form_start(form, {'attr': {'class': 'ui form'}}) }}
+            <div class="field">
+                <label> {{ form_label(form.montant, "Montant", {'label_attr': {'class': 'validate'}}) }}</label>
+                {{ form_widget(form.montant, {'attr': {'class': 'validate'}}) }}
+                {% if form_errors(form.montant) %}
+                    <div class="ui pointing red basic label">
+                        {{ form_errors(form.montant) }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="field">
+                <label> {{ form_label(form.organisme, "Organisme", {'label_attr': {'class': 'validate'}}) }}</label>
+                {{ form_widget(form.organisme, {'attr': {'class': 'validate'}}) }}
+                {% if form_errors(form.organisme) %}
+                    <div class="ui pointing red basic label">
+                        {{ form_errors(form.organisme) }}
+                    </div>
+                {% endif %}
+            </div>
+
+            {{ form_widget(form.valider, {'attr': {'class': 'ui button'}}) }}
+
+
+            {{ form_rest(form) }}
+
+            {# Fermeture de la balise <form> du formulaire HTML #}
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+
+{% endblock %}
+

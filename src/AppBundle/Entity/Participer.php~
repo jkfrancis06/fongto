@@ -2,7 +2,10 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\AppBundle;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * Participer
@@ -14,26 +17,26 @@ class Participer
 {
 
     /**
+
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Organisme")
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\GeneratedValue
+     */
+    private $id;
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Organisme", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
      */
     private $organisme;
 
     /**
-     * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Activite")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Activite", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
      */
     private $activite;
 
-
-
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="fichier_rapport", type="string", length=255)
-     */
-    private $fichierRapport;
 
     /**
      * @var string
@@ -41,6 +44,25 @@ class Participer
      * @ORM\Column(name="date_rapport", type="string", length=255)
      */
     private $dateRapport;
+
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @var string
+     */
+    private $filename;
+
+    /**
+     * @Vich\UploadableField(mapping="rapport", fileNameProperty="filename")
+     * @var File
+     */
+    private $file;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @var \DateTime
+     */
+    private $updatedAt;
 
 
     /**
@@ -58,30 +80,6 @@ class Participer
     }
 
     /**
-     * Get fichierRapport.
-     *
-     * @return string
-     */
-    public function getFichierRapport()
-    {
-        return $this->fichierRapport;
-    }
-
-    /**
-     * Set dateRapport.
-     *
-     * @param string $dateRapport
-     *
-     * @return Participer
-     */
-    public function setDateRapport($dateRapport)
-    {
-        $this->dateRapport = $dateRapport;
-
-        return $this;
-    }
-
-    /**
      * Get dateRapport.
      *
      * @return string
@@ -94,11 +92,11 @@ class Participer
     /**
      * Set organisme.
      *
-     * @param \Sdz\BlogBundle\Entity\Organisme $organisme
+     * @param Organisme $organisme
      *
      * @return Participer
      */
-    public function setOrganisme(\Sdz\BlogBundle\Entity\Organisme $organisme)
+    public function setOrganisme(Organisme $organisme)
     {
         $this->organisme = $organisme;
 
@@ -108,7 +106,7 @@ class Participer
     /**
      * Get organisme.
      *
-     * @return \Sdz\BlogBundle\Entity\Organisme
+     * @return Organisme
      */
     public function getOrganisme()
     {
@@ -118,11 +116,11 @@ class Participer
     /**
      * Set activite.
      *
-     * @param \Sdz\BlogBundle\Entity\Activite $activite
+     * @param Activite $activite
      *
      * @return Participer
      */
-    public function setActivite(\Sdz\BlogBundle\Entity\Activite $activite)
+    public function setActivite(Activite $activite)
     {
         $this->activite = $activite;
 
@@ -132,10 +130,20 @@ class Participer
     /**
      * Get activite.
      *
-     * @return \Sdz\BlogBundle\Entity\Activite
+     * @return Activite
      */
     public function getActivite()
     {
         return $this->activite;
+    }
+
+    /**
+     * Get id.
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 }

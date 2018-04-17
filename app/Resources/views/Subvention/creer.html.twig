@@ -1,0 +1,112 @@
+{% extends "base.html.twig" %}
+
+
+    {% block additionnalcss %}
+    {% endblock %}
+
+    {% block additionnaljs %}
+
+    {% endblock %}
+
+
+{% block mainpage  %}
+
+
+    <div class="ui breadcrumb" style="margin-top: 10px; margin-bottom: 20px">
+        <a class="section" href="{{ path('homepage') }}">Acceuil</a>
+        <div class="divider"> / </div>
+        <div class="section active">SUBVENTION</div>
+        <div class="divider"> / </div>
+        <div class="active section">Ajouter</div>
+    </div>
+
+    <div class="ui medium header">Ajouter une subvention</div>
+
+    <div class="divider"></div>
+
+    {% for message in app.session.flashbag.get('create_sub') %}
+        <div class="ui positive message">
+            <i class="close icon"></i>
+            <div class="header">
+                La subvention a été ajoutee avec succes
+            </div>
+        </div>
+    {% endfor %}
+
+    <div class="ui grid">
+        <div class="eleven wide column">
+            {{ form_start(form, {'attr': {'class': 'ui form'}}) }}
+            <div class="field">
+                <label> {{ form_label(form.libelleSub, "Libelle de la subvention", {'label_attr': {'class': 'validate'}}) }}</label>
+                {{ form_widget(form.libelleSub, {'attr': {'class': 'validate'}}) }}
+                {% if form_errors(form.libelleSub) %}
+                    <div class="ui pointing red basic label">
+                        {{ form_errors(form.libelleSub) }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="field">
+                <label> {{ form_label(form.typeSub, "Type de subvention", {'label_attr': {'class': 'validate'}}) }}</label>
+                {{ form_widget(form.typeSub, {'attr': {'class': 'validate'}}) }}
+                {% if form_errors(form.typeSub) %}
+                    <div class="ui pointing red basic label">
+                        {{ form_errors(form.typeSub) }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="field">
+                <label> {{ form_label(form.estimation, "Estimation", {'label_attr': {'class': 'validate'}}) }}</label>
+                {{ form_widget(form.estimation, {'attr': {'class': 'validate'}}) }}
+                {% if form_errors(form.estimation) %}
+                    <div class="ui pointing red basic label">
+                        {{ form_errors(form.estimation) }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="field">
+                <label> {{ form_label(form.activite, "Activite", {'label_attr': {'class': 'validate'}}) }}</label>
+                {{ form_widget(form.activite, {'attr': {'class': 'validate'}}) }}
+                {% if form_errors(form.activite) %}
+                    <div class="ui pointing red basic label">
+                        {{ form_errors(form.activite) }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="field">
+                <label> {{ form_label(form.partenaire, "Partenaire", {'label_attr': {'class': 'validate'}}) }}</label>
+                {{ form_widget(form.partenaire, {'attr': {'class': 'validate'}}) }}
+                {% if form_errors(form.partenaire) %}
+                    <div class="ui pointing red basic label">
+                        {{ form_errors(form.partenaire) }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="field">
+                <label> {{ form_label(form.file, "Fichier", {'label_attr': {'class': 'validate'}}) }}</label>
+                {{ form_widget(form.file, {'attr': {'class': 'validate'}}) }}
+                {% if form_errors(form.file) %}
+                    <div class="ui pointing red basic label">
+                        {{ form_errors(form.file) }}
+                    </div>
+                {% endif %}
+            </div>
+
+
+            {{ form_widget(form.ajouter, {'attr': {'class': 'ui button'}}) }}
+
+
+            {{ form_rest(form) }}
+
+            {# Fermeture de la balise <form> du formulaire HTML #}
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+
+{% endblock %}
+
