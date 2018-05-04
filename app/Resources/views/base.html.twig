@@ -28,12 +28,12 @@
         <div class="item">
             <img class="ui mini circular image" src="{{ asset('assets/img/eve.png') }}">
             <div class="ui  dropdown link item" tabindex="0" id="hybrid">
-                <span>sylvia GOMADO</span>
+                <span>{{ app.user.username }}</span>
                 <i class="dropdown icon"></i>
                 <div class="menu" tabindex="-1">
                     <div class="divider"></div>
                     <div class="item">
-                        <a href="#"><i class="fa fa-power-off" style="margin-right: 5px"></i>Deconnexion</a>
+                        <a href="{{ path('user_logout') }}"><i class="fa fa-power-off" style="margin-right: 5px"></i>Deconnexion</a>
                     </div>
                 </div>
             </div>

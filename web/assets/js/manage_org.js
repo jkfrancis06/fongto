@@ -5,10 +5,11 @@ window.onload = function () {
         delimiters: ['${', '}'],
         el: '#app',
         data: {
-            type: "",
+            type: '',
             organisation : [],
             index: '',
             ind: '',
+            type_org: 5,
             delected: false,
             dateCal: '',
             org: {
@@ -49,7 +50,11 @@ window.onload = function () {
             getOrganistions: function () {
                 this.organisation = []
                 self = this
-                axios.post('/organistion/load',this.type)
+                var data = {
+                    type : this.type_org,
+                    form: this.type
+                }
+                axios.post('/organistion/load',data)
                     .then(function (response) {
                         console.log(response)
                         if (response.data === 1){

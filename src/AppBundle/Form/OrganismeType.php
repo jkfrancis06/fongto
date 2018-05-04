@@ -33,7 +33,6 @@ class OrganismeType extends AbstractType
             ->add('domaine',DomaineType::class)
             ->add('president',PresidentType::class)
             ->add('directeur',DirecteurType::class  )
-            ->add('typeOrg')
 //            ->add('anneeAdh')
             ->add('numAdh')
             ->add('logo',VichImageType::class, array('required' => false))

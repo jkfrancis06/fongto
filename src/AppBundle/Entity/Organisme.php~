@@ -4,8 +4,8 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Vich\UploaderBundle\Entity\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\File;
 
 
 /**
@@ -16,8 +16,6 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  * @Vich\Uploadable
  */
 
-// TODO: Ajoouter la proprité logo qui peut etre null
-// TODO: Gerer l'upload de fichiers avec Vich upload Bundle
 
 class Organisme
 {
@@ -33,7 +31,7 @@ class Organisme
     /**
      * @var string
      *
-     * @ORM\Column(name="sigle", type="string", length=255, unique=true)
+     * @ORM\Column(name="sigle", type="string", length=255)
      * @Assert\NotBlank
      */
     private $sigle;
@@ -125,9 +123,9 @@ class Organisme
     private $adresseOrg;
 
     /**
-     * @var string
+     * @var int
      *
-     * @ORM\Column(name="type_org", type="string", length=255)
+     * @ORM\Column(name="type_org", type="integer")
      * @Assert\NotBlank
      */
     private $typeOrg;
@@ -177,14 +175,14 @@ class Organisme
     private $logo;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string",nullable=true, length=255)
      *
      * @var string
      */
     private $logoName;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      *
      * @var \DateTime
      */
@@ -651,7 +649,7 @@ class Organisme
     }
 
     /**
-     * @return File|null
+     * @return \Symfony\Component\HttpFoundation\File\File|null
      */
     public function getLogo()
     {

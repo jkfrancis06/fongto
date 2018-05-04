@@ -27,6 +27,26 @@
         <div id="app">
             <div class="eleven wide column">
 
+
+                <div class="eleven wide column">
+                    <div class="ui form">
+                        <div class="inline fields">
+                            <label>Type</label>
+                            <div class="field">
+                                <select v-model="type" name="status" required>
+                                    <option value="5">Tous</option>
+                                    <option value="0">Regional</option>
+                                    <option value="1">National</option>
+                                    <option value="2">International</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <button class="ui button" v-on:click="getPartenaires()">Valider</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <table class="ui celled table">
                     <thead>
                     <tr>
@@ -93,18 +113,19 @@
                         partenaires: [],
                         ind: '',
                         delected : false,
-                        partenaire: {}
+                        partenaire: {},
+                        type: 5
                     },
 
                     mounted: function () {
-                        self = this
-                        axios.get('/partenaire/get')
-                            .then(function (response) {
-                                console.log(response)
-                                if (response.data !== 0){
-                                    self.partenaires = response.data
-                                }
-                            })
+//                        self = this
+//                        axios.get('/partenaire/get')
+//                            .then(function (response) {
+//                                console.log(response)
+//                                if (response.data !== 0){
+//                                    self.partenaires = response.data
+//                                }
+//                            })
                     },
 
                     methods : {
@@ -124,6 +145,19 @@
                                 .then(function (response) {
                                     if (response.data === 0){
                                         location.reload()
+                                    }
+                                })
+                        },
+
+                        getPartenaires: function () {
+                            self = this
+                            axios.post('/partenaire/load', this.type)
+                                .then(function (response) {
+                                    if (response.data !== 0){
+                                        console.log(response)
+                                        self.partenaires = response.data
+                                    }else {
+                                        self.partenaires = []
                                     }
                                 })
                         }

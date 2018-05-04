@@ -12,13 +12,14 @@ use AppBundle\Entity\Partenaire;
 use AppBundle\Entity\Participer;
 use AppBundle\Entity\President;
 use AppBundle\Entity\Subvention;
+use AppBundle\Entity\User;
 use AppBundle\Form\ActiviteType;
 use AppBundle\Form\CotisationType;
 use AppBundle\Form\OrganismeType;
 use AppBundle\Form\PartenaireType;
 use AppBundle\Form\ParticiperType;
 use AppBundle\Form\SubventionType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,6 +31,71 @@ use Symfony\Component\Serializer\Serializer;
 
 class DefaultController extends Controller
 {
+
+
+
+    /**
+     * @Route("/create", name="create_user")
+     */
+    public function createUserAction(){
+
+        $user = new User();
+
+        $hash = $this->get('security.password_encoder')->encodePassword($user, '123456');
+
+        $user->setUsername('sylvia');
+        $user->setEmail('admin@admin.tg');
+        $user->setPassword($hash);
+        $user->setEnabled(1);
+        $user->setSalt('');
+        $user->setRoles(array('ROLE_USER'));
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
+
+        return new Response('ok');
+    }
+
+
+
+    public function createPasswordAction($password){
+
+        $user = new User();
+
+        $hash = $this->get('security.password_encoder')->encodePassword($user, $password);
+
+
+        return new Response($hash);
+    }
+
+
+    /**
+     * @Route("/login",name="user_login")
+     *
+     */
+
+    public function loginAction(Request $request)
+    {
+        // Si le visiteur est déjà identifié, on le redirige vers l'accueil
+        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            return $this->redirectToRoute('homepage');
+        }
+
+        // Le service authentication_utils permet de récupérer le nom d'utilisateur
+        // et l'erreur dans le cas où le formulaire a déjà été soumis mais était invalide
+        // (mauvais mot de passe par exemple)
+        $authenticationUtils = $this->get('security.authentication_utils');
+
+
+        return $this->render('Security/login.html.twig', array(
+            'last_username' => $authenticationUtils->getLastUsername(),
+            'error'         => $authenticationUtils->getLastAuthenticationError(),
+        ));
+    }
+
+
+
     /**
      * @Route("/", name="homepage")
      */
@@ -53,6 +119,7 @@ class DefaultController extends Controller
 
 
             $organisme->setFormJuridique($request->get('forme_juridique'));
+            $organisme->setTypeOrg($request->get('type_organisation'));
             $organisme->setDateCreation($request->get('dateCreation'));
             $organisme->setDateEnr($request->get('dateEnr'));
             $organisme->setAnneeAdh($request->get('anneeAdh'));
@@ -100,14 +167,29 @@ class DefaultController extends Controller
         $data = json_decode($json_data,true);
 
 
-        if ($data == 2){
-            $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Organisme');
-            $organisme = $repository->findAll();
+        if ($data["form"] == 2){
+            if ($data["type"] == 5){
+                $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Organisme');
+                $organisme = $repository->findAll();
+            }else{
+                $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Organisme');
+                $organisme = $repository->findBy([
+                    'typeOrg' => intval($data["type"])
+                ]);
+            }
         }else{
-            $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Organisme');
-            $organisme = $repository->findBy([
-                'formJuridique' => intval($data)
-            ]);
+            if ($data["type"] == 5){
+                $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Organisme');
+                $organisme = $repository->findBy([
+                    'formJuridique' => intval($data["form"])
+                ]);
+            }else{
+                $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Organisme');
+                $organisme = $repository->findBy([
+                    'formJuridique' => intval($data["form"]),
+                    'typeOrg' => intval($data["type"])
+                ]);
+            }
         }
 
         if ($organisme != null){
@@ -286,6 +368,8 @@ class DefaultController extends Controller
 
         if($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
 
+            $partenaire->setTypePar($request->get('type_partenaire'));
+
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($partenaire);
@@ -360,6 +444,38 @@ class DefaultController extends Controller
 
     }
 
+
+    /**
+     * @Route("/partenaire/load", name="loadPartenaire")
+     */
+
+    public function loadPartenaireAction(Request $request){
+        $json_data = $request->getContent();
+        $data = json_decode($json_data,true);
+
+
+        if ($data == 5){
+            $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Partenaire');
+            $partenaire = $repository->findAll();
+        }else{
+            $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Partenaire');
+            $partenaire = $repository->findBy([
+                'typePar' => intval($data)
+            ]);
+        }
+
+        if ($partenaire != null){
+
+            $org_array = [];
+            foreach ($partenaire as $org){
+                array_push($org_array,$org);
+            }
+            return new Response($this->serialize($org_array));
+
+        }else{
+            return new JsonResponse(0,200);
+        }
+    }
 
     /**
      * @Route("/cotisation/ajouter", name="ajouterCotisation")
@@ -526,6 +642,7 @@ class DefaultController extends Controller
         $form = $this->get('form.factory')->create(SubventionType::class, $subvention);
 
         if($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $subvention->setTypeSub($request->get('type_subvention'));
             $subvention->setDateSub(date("d-m-Y"));
             $em = $this->getDoctrine()->getManager();
             $em->persist($subvention);

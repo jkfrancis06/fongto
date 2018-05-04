@@ -3,3 +3,14 @@
 app:
     resource: '@AppBundle/Controller/'
     type: annotation
+
+
+user_login_check:
+    path: /login_check
+
+user_logout:
+    path: /logout
+
+sdzblog_voir:
+  path: /create/user/{password}
+  defaults: { _controller: AppBundle:Default:createPassword }

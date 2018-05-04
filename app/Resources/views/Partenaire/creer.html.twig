@@ -45,6 +45,18 @@
                 </div>
             {% endif %}
         </div>
+
+        <div class="field">
+            <label>Type de partenaire</label>
+            <select name="type_partenaire" required>
+                <option value="">--</option>
+                <option value="0">Regional</option>
+                <option value="1">National</option>
+                <option value="2">International</option>
+            </select>
+        </div>
+
+
         <div class="field">
             <label> {{ form_label(form.nomPar, "Nom du partenaire", {'label_attr': {'class': 'validate'}}) }}</label>
             {{ form_widget(form.nomPar, {'attr': {'class': 'validate'}}) }}

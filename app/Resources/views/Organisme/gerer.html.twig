@@ -52,6 +52,15 @@
                             <option value="2">Tous</option>
                         </select>
                     </div>
+                    <label>Type</label>
+                    <div class="field">
+                        <select v-model="type_org" name="status" required>
+                            <option value="5">Tous</option>
+                            <option value="3">Regional</option>
+                            <option value="1">National</option>
+                            <option value="2">International</option>
+                        </select>
+                    </div>
                     <div class="field">
                         <button class="ui button" v-on:click="getOrganistions()">Valider</button>
                     </div>

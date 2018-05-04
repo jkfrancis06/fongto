@@ -21,7 +21,6 @@ class SubventionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('libelleSub')
-            ->add('typeSub')
             ->add('estimation',NumberType::class)
             ->add('activite',EntityType::class,array(
                 'class' => 'AppBundle:Activite',

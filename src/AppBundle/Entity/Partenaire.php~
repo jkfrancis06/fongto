@@ -28,6 +28,14 @@ class Partenaire
      */
     private $siglePar;
 
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="type_par", type="string", length=255)
+     */
+    private $typePar;
+
     /**
      * @var string
      *

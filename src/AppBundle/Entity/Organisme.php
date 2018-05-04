@@ -123,9 +123,9 @@ class Organisme
     private $adresseOrg;
 
     /**
-     * @var string
+     * @var int
      *
-     * @ORM\Column(name="type_org", type="string", length=255)
+     * @ORM\Column(name="type_org", type="integer")
      * @Assert\NotBlank
      */
     private $typeOrg;

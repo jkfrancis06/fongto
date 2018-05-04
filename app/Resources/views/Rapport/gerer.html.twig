@@ -14,12 +14,12 @@
     <div class="ui breadcrumb" style="margin-top: 10px; margin-bottom: 20px">
         <a class="section" href="{{ path('homepage') }}">Acceuil</a>
         <div class="divider"> / </div>
-        <div class="section active">ACTIVITE</div>
+        <div class="section active">RAPPORT</div>
         <div class="divider"> / </div>
         <div class="active section">Gerer</div>
     </div>
 
-    <div class="ui medium header">Gerer les activites</div>
+    <div class="ui medium header">Gerer les rapports</div>
 
     <div class="divider"></div>
 
@@ -42,7 +42,7 @@
                     <td>{{ rapport.dateRapport }}</td>
                     <td>{{ rapport.activite.libelleAct }}</td>
                     <td>{{ rapport.organisme.nom }}</td>
-                    <td><a href="{{ 'rapport/' }}{{ rapport.fileName }}">Voir</a></td>
+                    <td><a href="{{ '/rapport/' }}{{ rapport.fileName }}">Telecharger</a></td>
                 </tr>
             {% endfor %}
             </tbody>

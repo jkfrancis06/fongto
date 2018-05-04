@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FONGTO</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/js/semantic.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/semantic.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/fixed-sidebar.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/font-awesome/css/font-awesome.css') }}">
+    {% block additionnalcss %}
+    {% endblock %}
+    {% block additionnaljs %} {% endblock %}
+</head>
+<body>
+
+    <div class="ui four column centered grid" style="margin-top: 6em">
+        <div class="column">
+            <div class="ui card">
+                <div class="content">
+                    <div class="header">Login</div>
+                </div>
+                <div class="content">
+                    <div class="ui large feed">
+
+                        {% if error %}
+                            <div class="ui error message">
+                                <div class="header">
+                                    {{ error.message }}
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <form action="{{ path('user_login_check') }}" method="post">
+                            <div class="event">
+                                <div class="content">
+                                    <div class="summary">
+                                        <div class="ui input">
+                                            <input id="username" type="text" class="validate" name="_username" value="{{ last_username }}" placeholder="username">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="event" style="margin-top: 2em;">
+                                <div class="content">
+                                    <div class="summary">
+                                        <div class="ui input">
+                                            <input id="password" type="password" name="_password" class="validate" placeholder="password">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="extra content" style="margin-top: 2em">
+                                <button class="ui button">Connexion</button>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

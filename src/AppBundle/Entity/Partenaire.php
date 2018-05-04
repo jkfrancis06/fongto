@@ -28,6 +28,14 @@ class Partenaire
      */
     private $siglePar;
 
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="type_par", type="string", length=255)
+     */
+    private $typePar;
+
     /**
      * @var string
      *
@@ -92,5 +100,29 @@ class Partenaire
     public function getNomPar()
     {
         return $this->nomPar;
+    }
+
+    /**
+     * Set typePar.
+     *
+     * @param string $typePar
+     *
+     * @return Partenaire
+     */
+    public function setTypePar($typePar)
+    {
+        $this->typePar = $typePar;
+
+        return $this;
+    }
+
+    /**
+     * Get typePar.
+     *
+     * @return string
+     */
+    public function getTypePar()
+    {
+        return $this->typePar;
     }
 }

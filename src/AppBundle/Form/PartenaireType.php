@@ -14,7 +14,8 @@ class PartenaireType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('siglePar')->add('nomPar')->add('Ajouter',SubmitType::class);
+        $builder->add('siglePar')
+            ->add('nomPar')->add('Ajouter',SubmitType::class);
     }/**
      * {@inheritdoc}
      */

@@ -164,13 +164,13 @@
         </div>
 
         <div class="field">
-            <label> {{ form_label(form.typeOrg, "Type de l'organistaion", {'label_attr': {'class': 'validate'}}) }}</label>
-            {{ form_widget(form.typeOrg, {'attr': {'class': 'validate'}}) }}
-            {% if form_errors(form.typeOrg) %}
-                <div class="ui pointing red basic label">
-                    {{ form_errors(form.typeOrg) }}
-                </div>
-            {% endif %}
+            <label>Type de l'organistaion</label>
+            <select name="type_organisation" required>
+                <option value="">--</option>
+                <option value="1">National</option>
+                <option value="2">International</option>
+                <option value="3">Regional</option>
+            </select>
         </div>
 
         <div class="field six wide column">
