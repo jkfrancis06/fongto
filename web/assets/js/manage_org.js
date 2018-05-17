@@ -6,6 +6,7 @@ window.onload = function () {
         el: '#app',
         data: {
             type: '',
+            search: '',
             organisation : [],
             index: '',
             ind: '',
@@ -37,6 +38,13 @@ window.onload = function () {
         },
 
         mounted: function () {
+
+            function filterDomains() {
+                var self=this;
+                temp = this.organisation.filter(function(cust){return cust.domaine.domainePri.toLowerCase().indexOf(self.search.toLowerCase())>=0;});
+                console.log(temp)
+            }
+
         },
 
         methods : {
@@ -46,6 +54,13 @@ window.onload = function () {
               console.log(this.dateCal);
               console.log($('#cal').val());
             },
+
+            filterDomains: function() {
+                 var self=this;
+                temp = this.organisation.filter(function(cust){return cust.domaine.domainePri.toLowerCase().indexOf(self.search.toLowerCase())>=0;});
+                console.log(temp)
+                this.organisation = temp
+              },
 
             getOrganistions: function () {
                 this.organisation = []
@@ -62,6 +77,7 @@ window.onload = function () {
                         }else {
                             self.organisation = response.data
                         }
+                        self.filterDomains()
                     })
             },
 

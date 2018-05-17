@@ -126,7 +126,6 @@ class Organisme
      * @var int
      *
      * @ORM\Column(name="type_org", type="integer")
-     * @Assert\NotBlank
      */
     private $typeOrg;
 
